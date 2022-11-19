@@ -1,16 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Item } from './entities/item.entity';
+import { Repository } from 'typeorm';
 @Injectable()
 export class ItemsService {
+
+  constructor(
+    @InjectRepository(Item)
+    private usersRepository: Repository<Item>,
+  ) {}
   create(createItemDto: CreateItemDto) {
     return 'This action adds a new item';
   }
 
-  findAll() {
-    return `This action returns all items`;
+  findAll(): Promise<Item[]> {
+    return this.usersRepository.find();
   }
+  // findAll(): string {
+  //   return "esta funionando";
+  // }
 
   findOne(id: number) {
     return `This action returns a #${id} item`;
